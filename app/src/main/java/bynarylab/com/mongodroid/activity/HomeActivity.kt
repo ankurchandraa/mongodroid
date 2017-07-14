@@ -1,5 +1,6 @@
 package bynarylab.com.mongodroid.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -11,8 +12,18 @@ import android.view.MenuItem
 import bynarylab.com.mongodroid.R
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
+import android.content.Intent
+import android.util.Log
+import bynarylab.com.mongodroid.utility.FileUtils
+
+
+
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    val FILE_SELECT_CODE = 1;
+    val TAG = "HomeActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +70,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
+            R.id.import_file -> {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "file/*"
+                startActivityForResult(intent, FILE_SELECT_CODE)
             }
             R.id.nav_gallery -> {
 
@@ -81,5 +94,22 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        when (requestCode) {
+            FILE_SELECT_CODE -> if (resultCode == Activity.RESULT_OK) {
+                // Get the Uri of the selected file
+                val uri = data.data
+                Log.d(TAG, "File Uri: " + uri.toString())
+                // Get the path
+                val path = FileUtils.getPath(this, uri)
+                Log.d(TAG, "File Path: " + path)
+                // Get the file instance
+                // File file = new File(path);
+                // Initiate the upload
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

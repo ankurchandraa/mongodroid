@@ -1,9 +1,9 @@
-package bynarylab.com.mongodroid.utility
+package bynarylab.com.mongodroid.model
 
 /**
- * Created by beast on 11/7/17.
+ * Created by beast on 12/7/17.
  */
-class MongoConnectionHandler {
+class MongoConnection {
 
     var connectionName = "";
     val dbHost = "";
